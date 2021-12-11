@@ -55,6 +55,7 @@ def main():
           "which emphasized the edges and sharpened the image.\n")
 
     print("-----------------------image 4----------------------\n")
+    # TODO implement
     im4 = cv2.imread(r'Images\umbrella.tif')
     im4 = cv2.cvtColor(im4, cv2.COLOR_BGR2GRAY)
     im4_clean = clean_im4(im4)
@@ -66,7 +67,7 @@ def main():
     plt.imshow(im4_clean, cmap='gray', vmin=0, vmax=255)
 
     print("Describe the problem with the image and your method/solution: \n")
-    print("   TODO: add explanation    \n")
+    print("\n")
 
     print("-----------------------image 5----------------------\n")
     im5 = cv2.imread(r'Images\USAflag.tif')
@@ -85,6 +86,7 @@ def main():
           f"The cleaning process has a trade-off between cleaning the writing and preserving the stars shape.\n")
 
     print("-----------------------image 6----------------------\n")
+    # TODO implement
     im6 = cv2.imread(r'Images\cups.tif')
     im6 = cv2.cvtColor(im6, cv2.COLOR_BGR2GRAY)
     im6_clean = clean_im6(im6)
@@ -96,9 +98,10 @@ def main():
     plt.imshow(im6_clean, cmap='gray', vmin=0, vmax=255)
 
     print("Describe the problem with the image and your method/solution: \n")
-    print("   TODO: add explanation    \n")
+    print("\n")
 
     print("-----------------------image 7----------------------\n")
+    # TODO check if we can do better
     im7 = cv2.imread(r'Images\house.tif')
     im7 = cv2.cvtColor(im7, cv2.COLOR_BGR2GRAY)
     im7_clean, shape = clean_im7(im7)
