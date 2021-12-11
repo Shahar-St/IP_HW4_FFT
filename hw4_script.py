@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-
+import cv2.cv2 as cv2
 from hw4_functions import *
 
 
@@ -19,7 +19,8 @@ def main():
     plt.imshow(im1_clean, cmap='gray', vmin=0, vmax=255)
 
     print("Describe the problem with the image and your method/solution: \n")
-    print("   TODO: add explanation    \n")
+    print("We first cleaned the S&P noise using a median filter.\n"
+          "Then we created an affine transform and mapped one of the pictures to fit the entire frame.\n")
 
     print("-----------------------image 2----------------------\n")
     im2 = cv2.imread(r'Images\windmill.tif')
@@ -33,7 +34,8 @@ def main():
     plt.imshow(im2_clean, cmap='gray', vmin=0, vmax=255)
 
     print("Describe the problem with the image and your method/solution: \n")
-    print("   TODO: add explanation    \n")
+    print("The image has a peak (high value) in one of its frequencies.\n"
+          "We calculated the image's fft, found the peaks and zeroed them.\n")
 
     print("-----------------------image 3----------------------\n")
     im3 = cv2.imread(r'Images\watermelon.tif')
@@ -47,7 +49,9 @@ def main():
     plt.imshow(im3_clean, cmap='gray', vmin=0, vmax=255)
 
     print("Describe the problem with the image and your method/solution: \n")
-    print("   TODO: add explanation    \n")
+    print("The image is blurred.\n"
+          "We calculated its highpass filter and added it to the image "
+          "which emphasized the edges and sharpened the image.\n")
 
     print("-----------------------image 4----------------------\n")
     im4 = cv2.imread(r'Images\umbrella.tif')
@@ -66,7 +70,7 @@ def main():
     print("-----------------------image 5----------------------\n")
     im5 = cv2.imread(r'Images\USAflag.tif')
     im5 = cv2.cvtColor(im5, cv2.COLOR_BGR2GRAY)
-    im5_clean = clean_im5(im5)
+    im5_clean, radius = clean_im5(im5)
 
     plt.figure()
     plt.subplot(1, 2, 1)
@@ -75,7 +79,9 @@ def main():
     plt.imshow(im5_clean, cmap='gray', vmin=0, vmax=255)
 
     print("Describe the problem with the image and your method/solution: \n")
-    print("   TODO: add explanation    \n")
+    print(f"The writing is similiar to S&P noise so we used a median filter.\n"
+          f"Additionally, in order to preserve the stripes the filter size was {radius}.\n"
+          f"The cleaning process has a trade-off between cleaning the writing and preserving the stars shape.\n")
 
     print("-----------------------image 6----------------------\n")
     im6 = cv2.imread(r'Images\cups.tif')
@@ -94,7 +100,7 @@ def main():
     print("-----------------------image 7----------------------\n")
     im7 = cv2.imread(r'Images\house.tif')
     im7 = cv2.cvtColor(im7, cv2.COLOR_BGR2GRAY)
-    im7_clean = clean_im7(im7)
+    im7_clean, shape = clean_im7(im7)
 
     plt.figure()
     plt.subplot(1, 2, 1)
@@ -103,7 +109,8 @@ def main():
     plt.imshow(im7_clean, cmap='gray', vmin=0, vmax=255)
 
     print("Describe the problem with the image and your method/solution: \n")
-    print("   TODO: add explanation    \n")
+    print(f"The image is blurred along the y axis.\n"
+          f"We used a high pass filter with shape: {shape} in order to preserve the vertical sharpness.\n")
 
     print("-----------------------image 8----------------------\n")
     im8 = cv2.imread(r'Images\bears.tif')
@@ -117,7 +124,7 @@ def main():
     plt.imshow(im8_clean, cmap='gray', vmin=0, vmax=255)
 
     print("Describe the problem with the image and your method/solution: \n")
-    print("   TODO: add explanation    \n")
+    print("The image is very dark, we mapped its colors to [0, 255] which enhanced the contrast.\n")
 
     plt.show()
 

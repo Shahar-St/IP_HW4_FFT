@@ -1,8 +1,6 @@
 import numpy as np
 from scipy.signal import convolve2d
 from scipy import ndimage
-import matplotlib.pyplot as plt
-import cv2
 
 
 def print_IDs():
@@ -50,7 +48,7 @@ def clean_im5(im):
     im = np.array(im, dtype=float)
     radius = (1, 2)
     clean_im = cleanImageMedian(im, radius)
-    return clean_im
+    return clean_im, radius
 
 
 def clean_im6(im):
@@ -68,7 +66,7 @@ def clean_im7(im):
     highpass = ndimage.convolve(im, kernel)
     clean_im = im + highpass
 
-    return clean_im
+    return clean_im, kernel.shape
 
 
 def clean_im8(im):
