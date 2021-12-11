@@ -1,6 +1,9 @@
+import matplotlib.pyplot as plt
+
 from hw4_functions import *
 
-if __name__ == "__main__":
+
+def main():
     print("----------------------------------------------------\n")
     print_IDs()
 
@@ -17,7 +20,8 @@ if __name__ == "__main__":
 
     print("Describe the problem with the image and your method/solution: \n")
     print("   TODO: add explanation    \n")
-
+    plt.show()
+    return
     print("-----------------------image 2----------------------\n")
     im2 = cv2.imread(r'Images\windmill.tif')
     im2 = cv2.cvtColor(im2, cv2.COLOR_BGR2GRAY)
@@ -115,3 +119,7 @@ if __name__ == "__main__":
 
     print("Describe the problem with the image and your method/solution: \n")
     print("   TODO: add explanation    \n")
+
+
+if __name__ == "__main__":
+    main()
