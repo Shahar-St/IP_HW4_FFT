@@ -10,7 +10,7 @@ def print_IDs():
 
 
 def clean_im1(im):
-    im = np.array(im)
+    im = np.array(im, dtype=float)
     clean_im = cleanImageMedian(im, 1)
     old_points = np.array([[20, 6], [20, 111], [130, 6], [130, 111]])
     new_points = np.array([[0, 0], [0, 255], [255, 0], [255, 255]])
@@ -20,6 +20,7 @@ def clean_im1(im):
 
 
 def clean_im2(im):
+    im = np.array(im, dtype=float)
     img_fourier = np.fft.fftshift(np.fft.fft2(im))
     img_fourier[132, 156] = img_fourier[124, 100] = 0
     img_inv = np.abs(np.fft.ifft2(img_fourier))
@@ -38,27 +39,33 @@ def clean_im3(im):
 
 
 def clean_im4(im):
-    clean_im = 0
+    im = np.array(im, dtype=float)
+    (x0, y0) = ()
+
+    clean_im = im
     return clean_im
 
 
 def clean_im5(im):
-    clean_im = 0
+    im = np.array(im, dtype=float)
+    clean_im = im
     return clean_im
 
 
 def clean_im6(im):
-    clean_im = 0
+    im = np.array(im, dtype=float)
+    clean_im = im
     return clean_im
 
 
 def clean_im7(im):
-    clean_im = 0
+    im = np.array(im, dtype=float)
+    clean_im = im
     return clean_im
 
 
 def clean_im8(im):
-    clean_im = 0
+    clean_im = im
     return clean_im
 
 
