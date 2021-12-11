@@ -15,13 +15,14 @@ def clean_im1(im):
     new_points = np.array([[0, 0], [0, 255], [255, 0], [255, 255]])
     transform = findAffineTransform(old_points, new_points)
     adjusted_im = mapImage(clean_im, transform, clean_im.shape)
-
     return adjusted_im
 
 
 def clean_im2(im):
-    clean_im = 0
-    return clean_im
+    img_fourier = np.fft.fftshift(np.fft.fft2(im))
+    img_fourier[132, 156] = img_fourier[124, 100] = 0
+    img_inv = np.abs(np.fft.ifft2(img_fourier))
+    return img_inv
 
 
 def clean_im3(im):

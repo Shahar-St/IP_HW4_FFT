@@ -20,8 +20,7 @@ def main():
 
     print("Describe the problem with the image and your method/solution: \n")
     print("   TODO: add explanation    \n")
-    plt.show()
-    return
+
     print("-----------------------image 2----------------------\n")
     im2 = cv2.imread(r'Images\windmill.tif')
     im2 = cv2.cvtColor(im2, cv2.COLOR_BGR2GRAY)
@@ -36,6 +35,8 @@ def main():
     print("Describe the problem with the image and your method/solution: \n")
     print("   TODO: add explanation    \n")
 
+    plt.show()
+    return
     print("-----------------------image 3----------------------\n")
     im3 = cv2.imread(r'Images\watermelon.tif')
     im3 = cv2.cvtColor(im3, cv2.COLOR_BGR2GRAY)
