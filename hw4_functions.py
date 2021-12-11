@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.signal import convolve2d
+from scipy import ndimage
 import matplotlib.pyplot as plt
 import cv2
 
@@ -26,7 +27,13 @@ def clean_im2(im):
 
 
 def clean_im3(im):
-    clean_im = 0
+    im = np.array(im, dtype=float)
+    kernel = np.array([[-1, -1, -1],
+                       [-1, 8, -1],
+                       [-1, -1, -1]])
+    highpass = ndimage.convolve(im, kernel)
+    clean_im = im + highpass
+
     return clean_im
 
 
