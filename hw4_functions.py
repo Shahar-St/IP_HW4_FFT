@@ -61,7 +61,13 @@ def clean_im6(im):
 
 def clean_im7(im):
     im = np.array(im, dtype=float)
-    clean_im = im
+    kernel = np.array([
+        [-1, -1, 4, -1, -1],
+        [-1, -1, 4, -1, -1],
+    ])
+    highpass = ndimage.convolve(im, kernel)
+    clean_im = im + highpass
+
     return clean_im
 
 
