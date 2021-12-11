@@ -52,7 +52,7 @@ def main():
     print("-----------------------image 4----------------------\n")
     im4 = cv2.imread(r'Images\umbrella.tif')
     im4 = cv2.cvtColor(im4, cv2.COLOR_BGR2GRAY)
-    im4_clean = clean_im2(im4)
+    im4_clean = clean_im4(im4)
 
     plt.figure()
     plt.subplot(1, 2, 1)
@@ -66,7 +66,7 @@ def main():
     print("-----------------------image 5----------------------\n")
     im5 = cv2.imread(r'Images\USAflag.tif')
     im5 = cv2.cvtColor(im5, cv2.COLOR_BGR2GRAY)
-    im5_clean = clean_im2(im5)
+    im5_clean = clean_im5(im5)
 
     plt.figure()
     plt.subplot(1, 2, 1)
@@ -80,7 +80,7 @@ def main():
     print("-----------------------image 6----------------------\n")
     im6 = cv2.imread(r'Images\cups.tif')
     im6 = cv2.cvtColor(im6, cv2.COLOR_BGR2GRAY)
-    im6_clean = clean_im2(im6)
+    im6_clean = clean_im6(im6)
 
     plt.figure()
     plt.subplot(1, 2, 1)
@@ -94,7 +94,7 @@ def main():
     print("-----------------------image 7----------------------\n")
     im7 = cv2.imread(r'Images\house.tif')
     im7 = cv2.cvtColor(im7, cv2.COLOR_BGR2GRAY)
-    im7_clean = clean_im2(im7)
+    im7_clean = clean_im7(im7)
 
     plt.figure()
     plt.subplot(1, 2, 1)
@@ -108,7 +108,7 @@ def main():
     print("-----------------------image 8----------------------\n")
     im8 = cv2.imread(r'Images\bears.tif')
     im8 = cv2.cvtColor(im8, cv2.COLOR_BGR2GRAY)
-    im8_clean = clean_im2(im8)
+    im8_clean = clean_im8(im8)
 
     plt.figure()
     plt.subplot(1, 2, 1)
