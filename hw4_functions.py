@@ -11,7 +11,7 @@ def print_IDs():
 
 def clean_im1(im):
     im = np.array(im, dtype=float)
-    clean_im = cleanImageMedian(im, 1)
+    clean_im = cleanImageMedian(im, (1, 1))
     old_points = np.array([[20, 6], [20, 111], [130, 6], [130, 111]])
     new_points = np.array([[0, 0], [0, 255], [255, 0], [255, 255]])
     transform = findAffineTransform(old_points, new_points)
@@ -48,7 +48,8 @@ def clean_im4(im):
 
 def clean_im5(im):
     im = np.array(im, dtype=float)
-    clean_im = im
+    radius = (1, 2)
+    clean_im = cleanImageMedian(im, radius)
     return clean_im
 
 
@@ -157,9 +158,12 @@ def cleanImageMedian(im, radius):
     median_im = im.copy()
     im = im.astype(float)
 
-    for ix in range(radius, im.shape[0] - radius):
-        for iy in range(radius, im.shape[1] - radius):
-            window = im[ix - radius: ix + radius + 1, iy - radius: iy + radius + 1]
+    vertical_radius, horizontal_radius = radius[0], radius[1]
+
+    for ix in range(vertical_radius, im.shape[0] - vertical_radius):
+        for iy in range(horizontal_radius, im.shape[1] - horizontal_radius):
+            window = im[ix - vertical_radius: ix + vertical_radius + 1,
+                     iy - horizontal_radius: iy + horizontal_radius + 1]
             median = np.median(window)
             median_im[ix, iy] = median
 
