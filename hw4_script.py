@@ -20,8 +20,9 @@ def main():
     plt.imshow(im1_clean, cmap='gray', vmin=0, vmax=255)
 
     print("Describe the problem with the image and your method/solution: \n")
-    print("We first cleaned the S&P noise using a median filter.\n"
-          "Then we created an affine transform and mapped one of the pictures to fit the entire frame.\n")
+    print("The images are noised by S&P noise and should be transform to the original shape.\n"
+          "We first cleaned the S&P noise using a median filter.\n"
+          "Then we created an projective transform and mapped each picture, then we average them.\n")
 
     print("-----------------------image 2----------------------\n")
     im2 = cv2.imread(r'Images\windmill.tif')
@@ -55,7 +56,6 @@ def main():
           "which emphasized the edges and sharpened the image.\n")
 
     print("-----------------------image 4----------------------\n")
-    # TODO implement
     im4 = cv2.imread(r'Images\umbrella.tif')
     im4 = cv2.cvtColor(im4, cv2.COLOR_BGR2GRAY)
     im4_clean = clean_im4(im4)
@@ -67,12 +67,14 @@ def main():
     plt.imshow(im4_clean, cmap='gray', vmin=0, vmax=255)
 
     print("Describe the problem with the image and your method/solution: \n")
-    print("\n")
+    print("The picture is shifting (echo image).\n"
+          "We moved to fft space and then used the formula from tutorial 7 "
+          "(a, b are known by over the mouse on the picture).\n")
 
     print("-----------------------image 5----------------------\n")
     im5 = cv2.imread(r'Images\USAflag.tif')
     im5 = cv2.cvtColor(im5, cv2.COLOR_BGR2GRAY)
-    im5_clean, radius = clean_im5(im5)
+    im5_clean = clean_im5(im5)
 
     plt.figure()
     plt.subplot(1, 2, 1)
@@ -81,12 +83,11 @@ def main():
     plt.imshow(im5_clean, cmap='gray', vmin=0, vmax=255)
 
     print("Describe the problem with the image and your method/solution: \n")
-    print(f"The writing is similiar to S&P noise so we used a median filter.\n"
-          f"Additionally, in order to preserve the stripes the filter size was {radius}.\n"
-          f"The cleaning process has a trade-off between cleaning the writing and preserving the stars shape.\n")
+    print(f"The image is noised by writing which disturb to the horizontal stripes.\n"
+          f"The cleaning process divided to 3 sub-images: 1. stars, 2. right to stars, 3.down to stars.\n"
+          f"1. stars didn't change, the others - we saved the columns from image's fft (0, u) and zeroed the others.\n")
 
     print("-----------------------image 6----------------------\n")
-    # TODO implement
     im6 = cv2.imread(r'Images\cups.tif')
     im6 = cv2.cvtColor(im6, cv2.COLOR_BGR2GRAY)
     im6_clean = clean_im6(im6)
@@ -98,13 +99,15 @@ def main():
     plt.imshow(im6_clean, cmap='gray', vmin=0, vmax=255)
 
     print("Describe the problem with the image and your method/solution: \n")
-    print("\n")
+    print("The picture is dark and has ringing.\n"
+          "When we moved to fft space we noticed a dark square in the center (low frequencies) "
+          "which didn't seem fit to the area.\n"
+          "We made it brighter without change the DC.\n")
 
     print("-----------------------image 7----------------------\n")
-    # TODO check if we can do better
     im7 = cv2.imread(r'Images\house.tif')
     im7 = cv2.cvtColor(im7, cv2.COLOR_BGR2GRAY)
-    im7_clean, shape = clean_im7(im7)
+    im7_clean = clean_im7(im7)
 
     plt.figure()
     plt.subplot(1, 2, 1)
@@ -113,8 +116,11 @@ def main():
     plt.imshow(im7_clean, cmap='gray', vmin=0, vmax=255)
 
     print("Describe the problem with the image and your method/solution: \n")
-    print(f"The image is blurred along the y axis.\n"
-          f"We used a high pass filter with shape: {shape} in order to preserve the vertical sharpness.\n")
+    print("The picture is shifting (echo image) 10 times.\n"
+          "we moved to fft space and then used the formula from tutorial 7"
+          " (a, b are known by over the mouse on the picture).\n"
+          "The black box in the top left corner helped us to get a, b.\n"
+          "Then we mapped its colors to [0, 255] which enhanced the contrast.\n")
 
     print("-----------------------image 8----------------------\n")
     im8 = cv2.imread(r'Images\bears.tif')

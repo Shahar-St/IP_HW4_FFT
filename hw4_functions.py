@@ -1,5 +1,4 @@
 import numpy as np
-from scipy.signal import convolve2d
 from scipy import ndimage
 
 
@@ -10,23 +9,35 @@ def print_IDs():
 def clean_im1(im):
     im = np.array(im, dtype=float)
     clean_im = cleanImageMedian(im, (1, 1))
-    old_points = np.array([[20, 6], [20, 111], [130, 6], [130, 111]])
-    new_points = np.array([[0, 0], [0, 255], [255, 0], [255, 255]])
-    transform = findAffineTransform(old_points, new_points)
-    adjusted_im = mapImage(clean_im, transform, clean_im.shape)
+    old_points_1 = np.array([[20, 6], [20, 111], [130, 6], [130, 111]])
+    new_points_1 = np.array([[0, 0], [0, 255], [255, 0], [255, 255]])
+    transform = findProjectiveTransform(old_points_1, new_points_1)
+    adjusted_im_1 = mapImage(clean_im, transform, clean_im.shape)
+
+    old_points_2 = np.array([[4, 180], [70, 248], [50, 121], [120, 176]])
+    new_points_2 = np.array([[0, 0], [0, 255], [255, 0], [255, 255]])
+    transform = findProjectiveTransform(old_points_2, new_points_2)
+    adjusted_im_2 = mapImage(clean_im, transform, clean_im.shape)
+
+    old_points_3 = np.array([[162, 77], [116, 146], [242, 132], [160, 245]])
+    new_points_3 = np.array([[0, 0], [0, 255], [255, 0], [255, 255]])
+    transform = findProjectiveTransform(old_points_3, new_points_3)
+    adjusted_im_3 = mapImage(clean_im, transform, clean_im.shape)
+
+    adjusted_im = np.add(adjusted_im_3, np.add(adjusted_im_1, adjusted_im_2)) / 3
+
     return adjusted_im
 
 
 def clean_im2(im):
-    im = np.array(im, dtype=float)
     img_fourier = np.fft.fftshift(np.fft.fft2(im))
     img_fourier[132, 156] = img_fourier[124, 100] = 0
     img_inv = np.abs(np.fft.ifft2(img_fourier))
+
     return img_inv
 
 
 def clean_im3(im):
-    im = np.array(im, dtype=float)
     kernel = np.array([[-1, -1, -1],
                        [-1, 8, -1],
                        [-1, -1, -1]])
@@ -37,43 +48,80 @@ def clean_im3(im):
 
 
 def clean_im4(im):
-    im = np.array(im, dtype=float)
-    # (x0, y0) = ()
+    x0, y0 = 4, 79
+    img_fourier = np.fft.fftshift(np.fft.fft2(im))
 
-    clean_im = im
-    return clean_im
+    kernel = np.zeros((img_fourier.shape[0], img_fourier.shape[1]), dtype=float)
+    kernel[0, 0] = 1
+    kernel[x0, y0] = 1
+
+    img_kernel_fourier = np.fft.fftshift(np.fft.fft2(kernel))
+    img_kernel_fourier = np.where(abs(img_kernel_fourier) <= 0.01, 1, img_kernel_fourier)
+
+    img_fourier_res = (2 * img_fourier) / img_kernel_fourier
+    img_inv = np.abs(np.fft.ifft2(img_fourier_res))
+
+    return img_inv
 
 
 def clean_im5(im):
     im = np.array(im, dtype=float)
-    radius = (1, 2)
-    clean_im = cleanImageMedian(im, radius)
-    return clean_im, radius
+
+    im_right_to_stars = im[0:90, 143:]
+    im_down_to_stars = im[90:, :]
+
+    img_fourier_right_to_stars = np.fft.fftshift(np.fft.fft2(im_right_to_stars))
+    kernel = np.zeros((img_fourier_right_to_stars.shape[0], img_fourier_right_to_stars.shape[1]), dtype=np.float)
+    kernel[:, 78:80] = 1
+    img_inv_right_to_stars = np.abs(np.fft.ifft2(img_fourier_right_to_stars * kernel))
+
+    img_fourier_down_to_stars = np.fft.fftshift(np.fft.fft2(im_down_to_stars))
+    kernel = np.zeros((img_fourier_down_to_stars.shape[0], img_fourier_down_to_stars.shape[1]), dtype=np.float)
+    kernel[:, 150:152] = 1
+    img_inv_down_to_stars = np.abs(np.fft.ifft2(img_fourier_down_to_stars * kernel))
+
+    im[90:, :] = img_inv_down_to_stars
+    im[0:90, 143:] = img_inv_right_to_stars
+
+    return im
 
 
 def clean_im6(im):
-    im = np.array(im, dtype=float)
-    clean_im = im
-    return clean_im
+    img_fourier = np.fft.fftshift(np.fft.fft2(im))
+
+    kernel = np.ones((im.shape[0], im.shape[1]), dtype=np.float)
+    kernel[108: 149, 108: 149] = 2
+    kernel[129, 129] = 1
+
+    img_inv = np.abs(np.fft.ifft2(img_fourier * kernel))
+    img_inv = img_inv * 0.8
+
+    return img_inv
 
 
 def clean_im7(im):
-    im = np.array(im, dtype=float)
-    kernel = np.array([
-        [-1, -1, 4, -1, -1],
-        [-1, -1, 4, -1, -1],
-    ])
-    highpass = ndimage.convolve(im, kernel)
-    clean_im = im + highpass
+    img_fourier = np.fft.fftshift(np.fft.fft2(im))
 
-    return clean_im, kernel.shape
+    kernel = np.zeros((img_fourier.shape[0], img_fourier.shape[1]), dtype=float)
+    kernel[0, 0:10] = 1
+    img_kernel_fourier = np.fft.fftshift(np.fft.fft2(kernel))
+    img_kernel_fourier = np.where(abs(img_kernel_fourier) <= 0.01, 1, img_kernel_fourier)
+
+    img_fourier_res = (2 * img_fourier) / img_kernel_fourier
+    img_inv = np.abs(np.fft.ifft2(img_fourier_res))
+
+    maxRangeList = [0, 255]
+    clean_im = contrastEnhance(img_inv, maxRangeList)
+
+    return clean_im
 
 
+# todo maybe Gamma Correction?
 def clean_im8(im):
-    im = np.array(im, dtype=float)
     maxRangeList = [0, 255]
     clean_im = contrastEnhance(im, maxRangeList)
-    return clean_im
+
+    return 1.35 * clean_im
 
 
 '''
@@ -99,7 +147,7 @@ def clean_im8(im):
 '''
 
 
-def findAffineTransform(pointsSet1, pointsSet2):
+def findProjectiveTransform(pointsSet1, pointsSet2):
     N = pointsSet1.shape[0]
 
     # iterate over points to create x , x'
@@ -107,15 +155,17 @@ def findAffineTransform(pointsSet1, pointsSet2):
     for i in range(0, N):
         x_point = pointsSet1[i][0]
         y_point = pointsSet1[i][1]
-        x.append([x_point, y_point, 0, 0, 1, 0])
-        x.append([0, 0, x_point, y_point, 0, 1])
+        x_t_point = pointsSet2[i][0]
+        y_t_point = pointsSet2[i][1]
+        x.append([x_point, y_point, 0, 0, 1, 0, -1 * x_point * x_t_point, -1 * y_point * x_t_point])
+        x.append([0, 0, x_point, y_point, 0, 1, -1 * x_point * y_t_point, -1 * y_point * y_t_point])
 
     x_t = pointsSet2[:, 0:2].reshape(N * 2)
     T = np.matmul(np.linalg.pinv(x), x_t)
     T = np.array([
         [T[0], T[1], T[4]],
         [T[2], T[3], T[5]],
-        [0, 0, 1]
+        [T[6], T[7], 1]
     ])
 
     return T
