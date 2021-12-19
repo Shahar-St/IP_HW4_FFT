@@ -116,7 +116,6 @@ def clean_im7(im):
     return clean_im
 
 
-# todo maybe Gamma Correction?
 def clean_im8(im):
     maxRangeList = [0, 255]
     clean_im = contrastEnhance(im, maxRangeList)

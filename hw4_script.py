@@ -20,9 +20,9 @@ def main():
     plt.imshow(im1_clean, cmap='gray', vmin=0, vmax=255)
 
     print("Describe the problem with the image and your method/solution: \n")
-    print("The images are noised by S&P noise and should be transform to the original shape.\n"
+    print("The images have S&P noise and should be transformed to the original shape.\n"
           "We first cleaned the S&P noise using a median filter.\n"
-          "Then we created an projective transform and mapped each picture, then we average them.\n")
+          "Then we created a projective transform for each image, mapped them and averaged them.\n")
 
     print("-----------------------image 2----------------------\n")
     im2 = cv2.imread(r'Images\windmill.tif')
@@ -68,8 +68,8 @@ def main():
 
     print("Describe the problem with the image and your method/solution: \n")
     print("The picture is shifting (echo image).\n"
-          "We moved to fft space and then used the formula from tutorial 7 "
-          "(a, b are known by over the mouse on the picture).\n")
+          "We moved to the frequency domain and used the formula from tutorial 7 "
+          "(x0, y0 were found by pointing over with the mouse on the picture).\n")
 
     print("-----------------------image 5----------------------\n")
     im5 = cv2.imread(r'Images\USAflag.tif')
@@ -83,9 +83,10 @@ def main():
     plt.imshow(im5_clean, cmap='gray', vmin=0, vmax=255)
 
     print("Describe the problem with the image and your method/solution: \n")
-    print(f"The image is noised by writing which disturb to the horizontal stripes.\n"
-          f"The cleaning process divided to 3 sub-images: 1. stars, 2. right to stars, 3.down to stars.\n"
-          f"1. stars didn't change, the others - we saved the columns from image's fft (0, u) and zeroed the others.\n")
+    print(f"The image is noised by writing which disturbed the horizontal stripes.\n"
+          f"The cleaning process was divided to 3 sub-images: 1. stars, 2. right to the stars, 3.below the stars.\n"
+          f"1. stars didn't change, the others - we saved the frequencies along the v axis "
+          f"and zeroed out the others.\n")
 
     print("-----------------------image 6----------------------\n")
     im6 = cv2.imread(r'Images\cups.tif')
@@ -100,9 +101,9 @@ def main():
 
     print("Describe the problem with the image and your method/solution: \n")
     print("The picture is dark and has ringing.\n"
-          "When we moved to fft space we noticed a dark square in the center (low frequencies) "
+          "When we moved to the frequency domain we noticed a dark square in the center (low frequencies) "
           "which didn't seem fit to the area.\n"
-          "We made it brighter without change the DC.\n")
+          "We made it brighter without changing the DC.\n")
 
     print("-----------------------image 7----------------------\n")
     im7 = cv2.imread(r'Images\house.tif')
@@ -117,8 +118,8 @@ def main():
 
     print("Describe the problem with the image and your method/solution: \n")
     print("The picture is shifting (echo image) 10 times.\n"
-          "we moved to fft space and then used the formula from tutorial 7"
-          " (a, b are known by over the mouse on the picture).\n"
+          "we moved to the frequency domain and then used the formula from tutorial 7"
+          " (x0, y0 were found by pointing over with the mouse on the picture).\n"
           "The black box in the top left corner helped us to get a, b.\n"
           "Then we mapped its colors to [0, 255] which enhanced the contrast.\n")
 
